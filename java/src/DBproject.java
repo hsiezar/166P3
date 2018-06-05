@@ -312,15 +312,31 @@ public class DBproject{
                 String age2 = in.readLine();
                 System.out.print("\tEnter number of seats: $");
                 String numseats = in.readLine();
-                query += id2 + ", \'" + make2 + "\', " + model2 + ", " + age2 + ", " + numseats + ")";
+                query += id2 + ", \'" + make2 + "\', \'" + model2 + "\' , " + age2 + ", " + numseats + ")";
                 System.out.print(query);
                 int num = esql.executeQuery(query);
-            }catch(SQLException e){
+            }catch(Exception e){
            System.err.println (e.getMessage());
 	   }
         }
 
 	public static void AddPilot(DBproject esql) {//2
+	    try{
+		String query = "INSERT INTO Pilot (id, fullname, nationality) VALUES (";
+		System.out.print("\tEnter ID: $");
+		String id = in.readLine();
+		System.out.print("\tEnter pilot name: $");
+		String name = in.readLine();
+		System.out.print("\tEnter pilot nationality: $");
+		String nationality = in.readLine();
+
+		query += id + ", \'" + name + "\', \'" + nationality + "\' )";
+
+		System.out.print(query);
+		int num = esql.executeQuery(query);
+	    }catch(Exception e){
+	   System.err.println (e.getMessage());
+	   }
 	}
 
 	public static void AddFlight(DBproject esql) {//3
