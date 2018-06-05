@@ -341,9 +341,49 @@ public class DBproject{
 
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
+	/*try{ 
+                String query = "INSERT INTO Flight (fnum, cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES (";
+                System.out.print("\tEnter Flight number: $");
+                String flightNum = in.readLine();
+                System.out.print("\tEnter Flight cost: $");
+                String cost = in.readLine();
+                System.out.print("\tEnter number of seats sold: $");
+                String numSold = in.readLine();
+                System.out.print("\tEnter number of stops during the flight: $");
+                String numStops = in.readLine();
+                System.out.print("\tEnter actual departure date: $");
+                String departDate = in.readLine();
+		System.out.print("\tEnter actual arrival date: $");
+		String arriveDate = in.readLine();
+		System.out.print("\tEnter arrival airport location: $");
+		String arriveAirport = in.readLine();
+		System.out.print("\tEnter Departure airport location: $");
+		String departAirport = in.readLine();
+
+                query += flightNum + ", '" + cost + ", " + numSold + ", " + numStops + ", " + numseats + ")";
+                System.out.print(query);
+                int num = esql.executeQuery(query);
+            }catch(Exception e){
+           System.err.println (e.getMessage());
+	   }
+*/
 	}
 
 	public static void AddTechnician(DBproject esql) {//4
+	    try{
+		String query = "INSERT INTO Technician (id, full_name) VALUES (";
+		System.out.print("\tEnter ID: $");
+		int id = in.readLine();
+		System.out.print("\tEnter Technician full name: $");
+		String name = in.readLine();
+
+		query += id + ", \'" + name + "\' )";
+
+		System.out.print(query);
+		int num = esql.executeQuery(query);
+	    }catch(Exception e){
+	   System.err.println (e.getMessage());
+	   }
 	}
 
 	public static void BookFlight(DBproject esql) {//5
