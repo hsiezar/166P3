@@ -23,6 +23,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -300,19 +303,72 @@ public class DBproject{
 	}//end readChoice
 
 	public static void AddPlane(DBproject esql) {//1
-            try{ 
+            Scanner read = new Scanner(System.in);
+	    try{ 
                 String query = "INSERT INTO Plane (id, make, model, age, seats) VALUES (";
                 System.out.print("\tEnter ID: $");
                 String id2 = in.readLine();
                 System.out.print("\tEnter make: $");
-                String make2  = in.readLine();
+                String make2;
+		do{    
+		    try{
+                	make2 = in.readLine();
+			if(make2.length() <= 0 || make2.length() >= 32) {
+			    throw new RuntimeException();
+			}
+			break;
+		    }catch (Exception e) {
+			    System.out.println("Your input is invalid!");
+			    continue;
+		    }
+		}while (true);
+
                 System.out.print("\tEnter model: $");
-                String model2 = in.readLine();
-                System.out.print("\tEnter age: $");
-                String age2 = in.readLine();
-                System.out.print("\tEnter number of seats: $");
-                String numseats = in.readLine();
-                query += id2 + ", \'" + make2 + "\', \'" + model2 + "\' , " + age2 + ", " + numseats + ")";
+                String model2;
+		do{    
+		    try{
+                	model2 = in.readLine();
+			if(model2.length() <= 0 || model2.length() >= 64) {
+			    throw new RuntimeException();
+			}
+			break;
+		    }catch (Exception e) {
+			    System.out.println("Your input is invalid!");
+			    continue;
+		    }
+		}while (true);
+
+                System.out.print("\tEnter age that is greater than 0: $");
+                int age2;
+		do{    
+		    try{
+                	age2 = read.nextInt();
+			if(age2 < 0) {
+			    throw new RuntimeException();
+			}
+			break;
+		    }catch (Exception e) {
+			    System.out.println("Your input is invalid!");
+			    continue;
+		    }
+		}while (true);
+
+                System.out.print("\tEnter number of seats greater than 0 and less than 500: $");
+		int numSeats;
+		do{    
+		    try{
+                	numSeats = read.nextInt();
+			if(numSeats <= 0 || numSeats > 500) {
+			    throw new RuntimeException();
+			}
+			break;
+		    }catch (Exception e) {
+			    System.out.println("Your input is invalid!");
+			    continue;
+		    }
+		}while (true);
+
+                query += id2 + ", \'" + make2 + "\', \'" + model2 + "\' , " + age2 + ", " + numSeats + ")";
                 System.out.print(query);
                 int num = esql.executeQuery(query);
             }catch(Exception e){
@@ -326,9 +382,35 @@ public class DBproject{
 		System.out.print("\tEnter ID: $");
 		String id = in.readLine();
 		System.out.print("\tEnter pilot name: $");
-		String name = in.readLine();
+		String name;
+		do{    
+		    try{
+                	name = in.readLine();
+			if(name.length() <= 0 || name.length() >= 128) {
+			    throw new RuntimeException();
+			}
+			break;
+		    }catch (Exception e) {
+			    System.out.println("Your input is invalid!");
+			    continue;
+		    }
+		}while (true);
+
 		System.out.print("\tEnter pilot nationality: $");
-		String nationality = in.readLine();
+		String nationality;
+		do{    
+		    try{
+                	nationality = in.readLine();
+			if(nationality.length() <= 0 || nationality.length() > 24) {
+			    throw new RuntimeException();
+			}
+			break;
+		    }catch (Exception e) {
+			    System.out.println("Your input is invalid!");
+			    continue;
+		    }
+		}while (true);
+	
 
 		query += id + ", \'" + name + "\', \'" + nationality + "\' )";
 
@@ -340,13 +422,27 @@ public class DBproject{
 	}
 
 	public static void AddFlight(DBproject esql) {//3
-		// Given a pilot, plane and flight, adds a flight in the DB
-	/*try{ 
+/*		// Given a pilot, plane and flight, adds a flight in the DB
+	Scanner read = new Scanner(System.in);
+	try{ 
                 String query = "INSERT INTO Flight (fnum, cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES (";
                 System.out.print("\tEnter Flight number: $");
                 String flightNum = in.readLine();
                 System.out.print("\tEnter Flight cost: $");
-                String cost = in.readLine();
+                int cost;
+		do{    
+		    try{
+                	cost = read.nextInt();
+			if(cost < 0) {
+			    throw new RuntimeException();
+			}
+			break;
+		    }catch (Exception e) {
+			    System.out.println("Your input is invalid!");
+			    continue;
+		    }
+		}while (true);
+
                 System.out.print("\tEnter number of seats sold: $");
                 String numSold = in.readLine();
                 System.out.print("\tEnter number of stops during the flight: $");
@@ -365,17 +461,29 @@ public class DBproject{
                 int num = esql.executeQuery(query);
             }catch(Exception e){
            System.err.println (e.getMessage());
-	   }
-*/
+	   }*/
 	}
 
 	public static void AddTechnician(DBproject esql) {//4
 	    try{
 		String query = "INSERT INTO Technician (id, full_name) VALUES (";
 		System.out.print("\tEnter ID: $");
-		int id = in.readLine();
+		String id = in.readLine();
 		System.out.print("\tEnter Technician full name: $");
-		String name = in.readLine();
+		String name;
+		do{    
+		    try{
+                	name = in.readLine();
+			if(name.length() <= 0 || name.length() > 128) {
+			    throw new RuntimeException("enter a name between 0 and 128 characters");
+			}
+			break;
+		    }catch (Exception e) {
+			    System.out.println("Your input is invalid!");
+			    continue;
+		    }
+		}while (true);
+
 
 		query += id + ", \'" + name + "\' )";
 
