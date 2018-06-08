@@ -508,18 +508,45 @@ public class DBproject{
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
-                String query = "SELECT SUM(pl.seats - z.num_sold) AS seats_available FROM (SELECT * FROM Flight f, FlightInfo fl WHERE f.fnum = fl.flight_id AND f.fnum = 10 AND f.actual_departure_date = '2014-05-11' )AS z, Plane pl WHERE                                 z.plane_id = pl.id;";
+	    try{
+
+		String query = "SELECT SUM(pl.seats - z.num_sold) AS seats_available FROM (SELECT * FROM Flight f, FlightInfo fl WHERE f.fnum = fl.flight_id AND f.fnum = 10 AND f.actual_departure_date = '2014-05-11' )AS z, Plane pl WHERE z.plane_id = pl.id;";
+		int num = esql.executeQueryAndPrintResult(query);
+
+	    }catch(Exception e){
+	   System.err.println(e.getMessage());
+	   }
 	}
 
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order
+	    try{
+		String query = "(SELECT P.id, COUNT(R.rid) FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id) ORDER BY COUNT(R.rid) DESC";
+		int num = esql.executeQueryAndPrintResult(query); 
+	    }catch(Exception e){
+	   System.err.println(e.getMessage());
+	   }
 	}
 
 	public static void ListTotalNumberOfRepairsPerYear(DBproject esql) {//8
 		// Count repairs per year and list them in ascending order
+	    try{
+		String query = "SELECT EXTRACT(YEAR FROM repair_date), COUNT(*) FROM REPAIRS GROUP BY (EXTRACT(YEAR FROM repair_date)) ORDER BY COUNT(*) ASC";
+		int num = esql.executeQueryAndPrintResult(query); 
+	    }catch(Exception e){
+	   System.err.println(e.getMessage());
+	   }
+
 	}
 	
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
-		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.
+		// Find how many passengers there are with a status (i.e. W,C,R) and list that number
+	   try{
+		String query = "SELECT COUNT(*) FROM Reservation R WHERE R.status = 'C' AND R.fid = 1176";
+		int num = esql.executeQueryAndPrintResult(query); 
+	    }catch(Exception e){
+	   System.err.println(e.getMessage());
+	   }
+	
 	}
 }
