@@ -305,8 +305,16 @@ public class DBproject{
 	public static void AddPlane(DBproject esql) {//1
             Scanner read = new Scanner(System.in);
 	    try{ 
+                int max = 0;
                 String query = "INSERT INTO Plane (id, make, model, age, seats) VALUES (";
-                System.out.print("\tEnter ID: $");
+                String findmax = "(SELECT Max(Plane.id)  FROM Plane)";
+                List<List<String>> maxResult = esql.executeQueryAndReturnResult(findmax);
+                for(List<String> it : maxResult){
+                    for(String st : it){
+                        max = Integer.parseInt(st);
+                    }
+                }
+                max++;
                 String id2 = in.readLine();
                 System.out.print("\tEnter make: $");
                 String make2;
