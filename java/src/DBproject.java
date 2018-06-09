@@ -351,7 +351,7 @@ public class DBproject{
 		    try{
 			age2 = read.nextLine();
 			int x = Integer.parseInt(age2);
-			if(x < 0) {
+			if(x <= 0) {
 			    throw new RuntimeException();
 			}
 			break;
@@ -559,7 +559,7 @@ public class DBproject{
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number
 	   try{
-		String findFlight = "SELECT COUNT(*) FROM Flight WHERE fnum = \'";	
+		String findFlight = "SELECT fid FROM Flight WHERE fnum = \'";	
 		System.out.print("\tEnter a flight number: $");
 		String flightNum;
 		int flightQuery = 0;
