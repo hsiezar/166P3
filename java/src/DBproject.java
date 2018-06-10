@@ -622,17 +622,18 @@ public class DBproject{
 	
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number
-	   try{
-		String findFlight = "SELECT fid FROM Flight WHERE fnum = \'";	
+	    Scanner read = new Scanner(System.in);
+	    try{
 		System.out.print("\tEnter a flight number: $");
 		String flightNum;
-		int flightQuery = 0;
+
 		do{
 		    try{
+			int flightQuery = 0;
+			String findFlight = "SELECT fnum FROM Flight WHERE fnum = \'";
 			flightNum = in.readLine();
 			findFlight += flightNum + "\'";
 			flightQuery = esql.executeQuery(findFlight);
-			System.out.print(flightQuery);
 			if(flightQuery == 0){
 			    throw new RuntimeException();
 			}
@@ -642,6 +643,35 @@ public class DBproject{
 			continue;
 		    }
 		}while(true);
+
+		int flag = 0;
+		System.out.print("\tEnter a status: W, C, or R: $");
+		String userStat;
+		char stat;
+
+		do{    
+		    try{
+			userStat = in.readLine();
+                	stat = userStat.charAt(0);
+			/*if(stat.length() < 1 || stat.length() > 1) {
+			    throw new RuntimeException();
+			}*/
+			if(userStat.length() > 1){
+			    throw new RuntimeException();
+			}
+			else if(stat == 'C' || stat == 'W' || stat == 'R' || stat == 'r' || stat == 'c' || stat == 'w'){
+				flag = 1;
+			}
+			if(flag == 0){
+			    throw new RuntimeException();
+			}
+			break;
+		    }catch (Exception e) {
+			    System.out.println("Your input is invalid!");
+			    continue;
+		    }
+		}while (true);
+
 		String query = "SELECT COUNT(*) FROM Reservation R WHERE R.status = 'C' AND R.fid = "+ flightNum;
 		int num = esql.executeQueryAndPrintResult(query); 
 	    }catch(Exception e){
