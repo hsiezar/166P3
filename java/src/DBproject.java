@@ -308,7 +308,12 @@ public class DBproject{
                 int max = 0;
                 String query = "INSERT INTO Plane (id, make, model, age, seats) VALUES (";
                 String findmax = "(SELECT Max(Plane.id)  FROM Plane)";
-                List<List<String>> maxResult = esql.executeQueryAndReturnResult(findmax);
+                List<List<String>> maxResult = null;
+                try{
+                    maxResult = esql.executeQueryAndReturnResult(findmax);
+                }catch(SQLException e){
+                System.err.println(e.getMessage());
+                }
                 for(List<String> it : maxResult){
                     for(String st : it){
                         max = Integer.parseInt(st);
@@ -377,7 +382,11 @@ public class DBproject{
 		}while (true);
 
                 query += max + ", \'" + make2 + "\', \'" + model2 + "\' , " + age2 + ", " + numSeats + ")";
-                int num = esql.executeQuery(query);
+                try{
+                    int num = esql.executeQuery(query);
+                 }catch(SQLException e){
+                 System.err.println(e.getMessage());
+                 }
             }catch(Exception e){
            System.err.println (e.getMessage());
 	   }
@@ -519,7 +528,36 @@ public class DBproject{
 		// Given a customer and a flight that he/she wants to book, add a reservation to the 
 	try{
                System.out.print("\tEnter Flight Number: $");
-               String fl_id = in.readLine();
+               String fl_id = "";
+               int bol = 0;
+               do{
+                    try{
+                        List<List<String>> flightQuery = null;
+                        String findFlight = "SELECT cost FROM Flight WHERE fnum = ";
+                        fl_id = in.readLine();
+                        findFlight += fl_id + ";";
+                        try{
+                            flightQuery = esql.executeQueryAndReturnResult(findFlight);
+                        }catch(SQLException e){
+                        System.err.println(e.getMessage());
+                        }
+                        for(List<String> it : flightQuery){
+                            for(String st : it){
+                                bol = Integer.parseInt(st);
+                                //System.out.print("this is bol!!");
+                                //System.out.print(bol);
+                  
+                            }
+                         }
+                        if(bol == 0){
+                            throw new RuntimeException();
+                        }
+                        break;
+                    }catch(Exception e){
+                        System.out.println("Your input is invalid! Try again");
+                        continue;
+                    }
+                }while(true);
                System.out.print("\tEnter Customer ID: $");
                String cus_id = in.readLine();
                String query = "SELECT SUM(pl.seats - z.num_sold) AS seats_available FROM (SELECT * FROM Flight f, FlightInfo fl WHERE f.fnum = fl.flight_id AND f.fnum = " + fl_id + ")AS z, Plane pl WHERE z.plane_id = pl.id;";
@@ -586,20 +624,34 @@ public class DBproject{
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
 		Scanner read = new Scanner(System.in);
+                String fl_id = "";
+               int bol = 0;
             try{
                 System.out.print("\tEnter a flight number: $");
-                String flightNum;
 
                 do{
                     try{
-                        int flightQuery = 0;
-                        String findFlight = "SELECT fnum FROM Flight WHERE fnum = \'";
-                        flightNum = in.readLine();
-                        findFlight += flightNum + "\'";
-                        flightQuery = esql.executeQuery(findFlight);
-                        if(flightQuery == 0){
+                        List<List<String>> flightQuery = null;
+                        String findFlight = "SELECT cost FROM Flight WHERE fnum = ";
+                        fl_id = in.readLine();
+                        findFlight += fl_id + ";";
+                        try{
+                            flightQuery = esql.executeQueryAndReturnResult(findFlight);
+                        }catch(SQLException e){
+                        System.err.println(e.getMessage());
+                        }
+                        for(List<String> it : flightQuery){
+                            for(String st : it){
+                                bol = Integer.parseInt(st);
+                                //System.out.print("this is bol!!");
+                                //System.out.print(bol);
+
+                            }
+                         }
+                        if(bol == 0){
                             throw new RuntimeException();
                         }
+                        
                         break;
                     }catch(Exception e){
                         System.out.println("Your input is invalid!");
@@ -610,7 +662,7 @@ public class DBproject{
 		System.out.print("\tEnter a date following the format YYYY-MM-DD: $");
 		String userDate = in.readLine();
 
-		String query = "SELECT SUM(pl.seats - z.num_sold) AS seats_available FROM (SELECT * FROM Flight f, FlightInfo fl WHERE f.fnum = fl.flight_id AND f.fnum = \'" + flightNum + "\')" + "AS z, Plane pl WHERE z.plane_id = pl.id;";
+		String query = "SELECT SUM(pl.seats - z.num_sold) AS seats_available FROM (SELECT * FROM Flight f, FlightInfo fl WHERE f.fnum = fl.flight_id AND f.fnum = \'" + fl_id + "\')" + "AS z, Plane pl WHERE z.plane_id = pl.id;";
 		int num = esql.executeQueryAndPrintResult(query);
 
 		
@@ -622,7 +674,7 @@ public class DBproject{
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order
 	    try{
-		String query = "(SELECT P.id, COUNT(R.rid) FROM Plane P, Repairs R GROUP BY P.id) ORDER BY COUNT(R.rid) DESC";
+		String query = "(SELECT P.id, COUNT(R.rid) FROM Plane P, Repairs R Where P.id = R.plane_id GROUP BY P.id) ORDER BY COUNT(R.rid) DESC";
 		int num = esql.executeQueryAndPrintResult(query); 
 	    }catch(Exception e){
 	   System.err.println(e.getMessage());
