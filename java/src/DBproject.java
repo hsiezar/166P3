@@ -516,8 +516,72 @@ public class DBproject{
 	}
 
 	public static void BookFlight(DBproject esql) {//5a
-		// Given a customer and a flight that he/she wants to book, add a reservation to the   
-	}
+		// Given a customer and a flight that he/she wants to book, add a reservation to the 
+	try{
+               System.out.print("\tEnter Flight Number: $");
+               String fl_id = in.readLine();
+               System.out.print("\tEnter Customer ID: $");
+               String cus_id = in.readLine();
+               String query = "SELECT SUM(pl.seats - z.num_sold) AS seats_available FROM (SELECT * FROM Flight f, FlightInfo fl WHERE f.fnum = fl.flight_id AND f.fnum = " + fl_id + ")AS z, Plane pl WHERE z.plane_id = pl.id;";
+
+               List<List<String>> query_out = esql.executeQueryAndReturnResult(query);
+               int seats_avail = 0;
+               for(List<String> it : query_out){
+                   for(String st : it){
+                       seats_avail = Integer.parseInt(st);
+                   }
+               }
+               //System.out.print("this is seats_avail");
+               //System.out.print(seats_avail);
+               String findmax = "(SELECT Max(Reservation.rnum)  FROM Reservation)";
+               List<List<String>> maxResult = esql.executeQueryAndReturnResult(findmax);
+               int max = 0;
+               for(List<String> it : maxResult){
+                   for(String st : it){
+                       max = Integer.parseInt(st);
+                   }
+               }
+               max++;
+
+               if(seats_avail > 0){
+                   String sold_q = "SELECT num_sold FROM Flight WHERE Flight.fnum = " + fl_id + ";";
+                   List<List<String>> new_sold = esql.executeQueryAndReturnResult(sold_q);
+                   int seats_act = 0;
+                   for(List<String> it : new_sold ){
+                       for(String st : it){
+                           seats_act = Integer.parseInt(st);
+                       }
+                   }
+                   seats_act++;
+                   System.out.print(seats_act);
+                   String updateQ = "UPDATE Flight SET num_sold = num_sold + 1 WHERE fnum = " + fl_id + ";";
+                   String makeres = "INSERT INTO Reservation(rnum, cid, fid, status) VALUES(" + max + ", " + cus_id + ", " + fl_id + ", \'R\');";
+                   try{
+                       int wr = esql.executeQuery(updateQ);
+                   }catch(SQLException e){
+                    System.err.println(e.getMessage());
+                    }
+                   try{
+                       int mr = esql.executeQuery(makeres);
+                   }catch(SQLException e){
+                    System.err.println(e.getMessage());
+                    }
+                   //String updateQ = "UPDATE Flight SET num_sold = 1 WHERE fnum = 12";
+                   //wr = esql.executeQuery(makeres);
+               }
+               //if(seats_avail > 0){
+                   //String makeres = "INSERT INTO Reservation(rnum, cid, fid, status) VALUES(" + max + ", " + cus_id + ", " + fl_id + ", \'R\');";
+                   //int mr = esql.executeQuery(makeres);
+               //}
+               else{
+                   String makeres = "INSERT INTO Reservation(rnum, cid, fid, status) VALUES(" + max + ", " + cus_id + ", " + fl_id + ", \'W\'";
+                   int rows4wait = esql.executeQuery(makeres);
+               }
+
+           }catch(Exception e){
+           System.err.println(e.getMessage());
+           }
+        }	
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
