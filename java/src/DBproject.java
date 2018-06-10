@@ -653,13 +653,17 @@ public class DBproject{
 			String findFlight = "SELECT fnum FROM Flight WHERE fnum = \'";
 			flightNum = in.readLine();
 			findFlight += flightNum + "\'";
-			flightQuery = esql.executeQuery(findFlight);
+                        try{
+			    flightQuery = esql.executeQuery(findFlight);
+                        }catch(SQLException e){
+                        System.err.println(e.getMessage());
+                        }
 			if(flightQuery == 0){
 			    throw new RuntimeException();
 			}
 		        break;
 		    }catch(Exception e){
-			System.out.println("Your input is invalid!");
+			System.out.println("Your input is invalid! Try again");
 			continue;
 		    }
 		}while(true);
@@ -687,13 +691,17 @@ public class DBproject{
 			}
 			break;
 		    }catch (Exception e) {
-			    System.out.println("Your input is invalid!");
+			    System.out.println("Your input is invalid! Try again");
 			    continue;
 		    }
 		}while (true);
-
-		String query = "SELECT COUNT(*) FROM Reservation R WHERE R.status = 'C' AND R.fid = "+ flightNum;
-		int num = esql.executeQueryAndPrintResult(query); 
+                
+                try{
+		    String query = "SELECT COUNT(*) FROM Reservation R WHERE R.status = 'C' AND R.fid = "+ flightNum;
+		    int num = esql.executeQueryAndPrintResult(query); 
+                }catch(SQLException e){
+                System.err.println(e.getMessage());
+                }
 	    }catch(Exception e){
 	   System.err.println(e.getMessage());
 	   }
