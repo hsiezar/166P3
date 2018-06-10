@@ -449,8 +449,20 @@ public class DBproject{
 	Scanner read = new Scanner(System.in);
 	try{ 
                 String query = "INSERT INTO Flight (fnum, cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES (";
-                System.out.print("\tEnter Flight number: $");
-                String flightNum = in.readLine();
+                int max = 0;
+                String findmax = "(SELECT Max(Flight.id)  FROM Flight)";
+                List<List<String>> maxResult = null;
+                try{
+                    maxResult = esql.executeQueryAndReturnResult(findmax);
+                }catch(SQLException e){
+                System.err.println(e.getMessage());
+                }
+                for(List<String> it : maxResult){
+                    for(String st : it){
+                        max = Integer.parseInt(st);
+                    }
+                }
+                max++;
                 System.out.print("\tEnter Flight cost: $");
                 int cost;
 		do{    
@@ -479,7 +491,7 @@ public class DBproject{
 		System.out.print("\tEnter Departure airport location: $");
 		String departAirport = in.readLine();
 
-                query += flightNum + ", '" + cost + ", " + numSold + ", " + numStops + ", " + numseats + ")";
+                query += max + ", '" + cost + ", " + numSold + ", " + numStops + ", " + numseats + ")";
                 System.out.print(query);
                 int num = esql.executeQuery(query);
             }catch(Exception e){
