@@ -632,6 +632,7 @@ public class DBproject{
 	try{
                System.out.print("\tEnter Flight Number: $");
                String fl_id = "";
+               String cus_id = "";
                int bol = 0;
                do{
                     try{
@@ -662,9 +663,40 @@ public class DBproject{
                     }
                 }while(true);
                System.out.print("\tEnter Customer ID: $");
-               String cus_id = in.readLine();
+               char c = ' ';
+               do{
+                    try{
+                        List<List<String>> cusQuery = null;
+                        String findCus = "SELECT gtype FROM Customer WHERE id = ";
+                        cus_id = in.readLine();
+                        findCus += cus_id + ";";
+                        try{
+                            cusQuery = esql.executeQueryAndReturnResult(findCus);
+                        }catch(SQLException e){
+                        System.err.println(e.getMessage());
+                        }
+                        for(List<String> it : cusQuery){
+                            for(String st : it){
+                                c = st.charAt(0);
+                                System.out.println("this is gender!");
+                                System.out.println(c);
+                            }
+                         }
+                        int flag = 0;
+                        if(c == 'M' || c == 'F'){
+                            flag = 1;
+                        }
+                        if(flag == 0){
+                            throw new RuntimeException();
+                        }
+                        break;
+                    }catch(Exception e){
+                        System.out.println("Your input is invalid! Try again");
+                        continue;
+                    }
+                }while(true);
+               
                String query = "SELECT SUM(pl.seats - z.num_sold) AS seats_available FROM (SELECT * FROM Flight f, FlightInfo fl WHERE f.fnum = fl.flight_id AND f.fnum = " + fl_id + ")AS z, Plane pl WHERE z.plane_id = pl.id;";
-
                List<List<String>> query_out = esql.executeQueryAndReturnResult(query);
                int seats_avail = 0;
                for(List<String> it : query_out){
