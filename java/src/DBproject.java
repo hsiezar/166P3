@@ -330,7 +330,7 @@ public class DBproject{
 			}
 			break;
 		    }catch (Exception e) {
-			    System.out.println("Your input is invalid!");
+			    System.out.println("Your input is invalid! Try Again");
 			    continue;
 		    }
 		}while (true);
@@ -345,7 +345,7 @@ public class DBproject{
 			}
 			break;
 		    }catch (Exception e) {
-			    System.out.println("Your input is invalid!");
+			    System.out.println("Your input is invalid! Try again");
 			    continue;
 		    }
 		}while (true);
@@ -361,7 +361,7 @@ public class DBproject{
 			}
 			break;
 		    }catch (Exception e) {
-			    System.out.println("Your input is invalid!");
+			    System.out.println("Your input is invalid! Try again");
 			    continue;
 		    }
 		}while (true);
@@ -377,7 +377,7 @@ public class DBproject{
 			}
 			break;
 		    }catch (Exception e) {
-			    System.out.println("Your input is invalid!");
+			    System.out.println("Your input is invalid! Try again");
 			    continue;
 		    }
 		}while (true);
@@ -416,7 +416,7 @@ public class DBproject{
 			}
 			break;
 		    }catch (Exception e) {
-			    System.out.println("Your input is invalid!");
+			    System.out.println("Your input is invalid! Try Again");
 			    continue;
 		    }
 		}while (true);
@@ -431,7 +431,7 @@ public class DBproject{
 			}
 			break;
 		    }catch (Exception e) {
-			    System.out.println("Your input is invalid!");
+			    System.out.println("Your input is invalid! Try again");
 			    continue;
 		    }
 		}while (true);
@@ -476,7 +476,7 @@ public class DBproject{
                         }
                         break;
                     }catch (Exception e) {
-                            System.out.println("Your input is invalid!");
+                            System.out.println("Your input is invalid! Try again");
                             continue;
                     }
                 }while (true);
@@ -493,7 +493,7 @@ public class DBproject{
                         }
                         break;
                     }catch (Exception e) {
-                            System.out.println("Your input is invalid!");
+                            System.out.println("Your input is invalid! Try again");
                             continue;
                     }
                 }while (true);
@@ -510,7 +510,7 @@ public class DBproject{
                         }
                         break;
                     }catch (Exception e) {
-                            System.out.println("Your input is invalid!");
+                            System.out.println("Your input is invalid! Try again");
                             continue;
                     }
                 }while (true);
@@ -528,7 +528,7 @@ public class DBproject{
 
                         break;
                     }catch (Exception e) {
-                            System.out.println("Your input is invalid!");
+                            System.out.println("Your input is invalid! Try again");
                             continue;
                     }
                 }while (true);
@@ -545,7 +545,7 @@ public class DBproject{
 			
                         break;
                     }catch (Exception e) {
-                            System.out.println("Your input is invalid!");
+                            System.out.println("Your input is invalid! Try again");
                             continue;
                     }
                 }while (true);
@@ -561,7 +561,7 @@ public class DBproject{
 			}
 			break;
                     }catch (Exception e) {
-                            System.out.println("Your input is invalid!");
+                            System.out.println("Your input is invalid! Try Again");
                             continue;
                     }
                 }while (true);
@@ -577,13 +577,13 @@ public class DBproject{
                         }
                         break;
                     }catch (Exception e) {
-                            System.out.println("Your input is invalid!");
+                            System.out.println("Your input is invalid! Try Again");
                             continue;
                     }
                 }while (true);
 
                 query += max + ", " + userCost + ", " + userSold + ", " + userStops + ", \'" + result + "\', \'" + arrivalResult + "\', " + "\'" + arriveAirport + "\'" + ", " + "\'" + departAirport + "\')";
-                System.out.print(query);
+                //System.out.print(query);
                 int num = esql.executeQuery(query);
             }catch(Exception e){
            System.err.println (e.getMessage());
@@ -613,7 +613,7 @@ public class DBproject{
 			}
 			break;
 		    }catch (Exception e) {
-			    System.out.println("Your input is invalid!");
+			    System.out.println("Your input is invalid! Try again");
 			    continue;
 		    }
 		}while (true);
@@ -678,8 +678,8 @@ public class DBproject{
                         for(List<String> it : cusQuery){
                             for(String st : it){
                                 c = st.charAt(0);
-                                System.out.println("this is gender!");
-                                System.out.println(c);
+                                //System.out.println("this is gender!");
+                                //System.out.println(c);
                             }
                          }
                         int flag = 0;
@@ -726,7 +726,7 @@ public class DBproject{
                        }
                    }
                    seats_act++;
-                   System.out.print(seats_act);
+                   //System.out.print(seats_act);
                    String updateQ = "UPDATE Flight SET num_sold = num_sold + 1 WHERE fnum = " + fl_id + ";";
                    String makeres = "INSERT INTO Reservation(rnum, cid, fid, status) VALUES(" + max + ", " + cus_id + ", " + fl_id + ", \'R\');";
                    try{
@@ -789,7 +789,7 @@ public class DBproject{
                         
                         break;
                     }catch(Exception e){
-                        System.out.println("Your input is invalid!");
+                        System.out.println("Your input is invalid! Try again");
                         continue;
                     }
                 }while(true);
