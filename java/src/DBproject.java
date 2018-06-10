@@ -367,10 +367,11 @@ public class DBproject{
 		}while (true);
 
                 System.out.print("\tEnter number of seats greater than 0 and less than 500: $");
-		int numSeats;
+		String userSeats;
 		do{    
 		    try{
-                	numSeats = read.nextInt();
+			userSeats = read.nextLine();
+                	int numSeats = Integer.parseInt(userSeats);
 			if(numSeats <= 0 || numSeats > 500) {
 			    throw new RuntimeException();
 			}
@@ -381,7 +382,7 @@ public class DBproject{
 		    }
 		}while (true);
 
-                query += max + ", \'" + make2 + "\', \'" + model2 + "\' , " + age2 + ", " + numSeats + ")";
+                query += max + ", \'" + make2 + "\', \'" + model2 + "\' , " + age2 + ", " + userSeats + ")";
                 try{
                     int num = esql.executeQuery(query);
                  }catch(SQLException e){
@@ -445,12 +446,12 @@ public class DBproject{
 	}
 
 	public static void AddFlight(DBproject esql) {//3
-/*		// Given a pilot, plane and flight, adds a flight in the DB
+		// Given a pilot, plane and flight, adds a flight in the DB
 	Scanner read = new Scanner(System.in);
 	try{ 
                 String query = "INSERT INTO Flight (fnum, cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES (";
                 int max = 0;
-                String findmax = "(SELECT Max(Flight.id)  FROM Flight)";
+                String findmax = "(SELECT Max(Flight.fnum)  FROM Flight)";
                 List<List<String>> maxResult = null;
                 try{
                     maxResult = esql.executeQueryAndReturnResult(findmax);
@@ -463,41 +464,138 @@ public class DBproject{
                     }
                 }
                 max++;
-                System.out.print("\tEnter Flight cost: $");
-                int cost;
-		do{    
-		    try{
-                	cost = read.nextInt();
-			if(cost < 0) {
-			    throw new RuntimeException();
-			}
-			break;
-		    }catch (Exception e) {
-			    System.out.println("Your input is invalid!");
-			    continue;
-		    }
-		}while (true);
+                
+		System.out.print("\tEnter Flight cost: $");
+                String userCost;
+                do{
+                    try{
+                        userCost = read.nextLine();
+			int numCost = Integer.parseInt(userCost);
+                        if(numCost < 0) {
+                            throw new RuntimeException();
+                        }
+                        break;
+                    }catch (Exception e) {
+                            System.out.println("Your input is invalid!");
+                            continue;
+                    }
+                }while (true);
 
                 System.out.print("\tEnter number of seats sold: $");
-                String numSold = in.readLine();
-                System.out.print("\tEnter number of stops during the flight: $");
-                String numStops = in.readLine();
-                System.out.print("\tEnter actual departure date: $");
-                String departDate = in.readLine();
-		System.out.print("\tEnter actual arrival date: $");
-		String arriveDate = in.readLine();
-		System.out.print("\tEnter arrival airport location: $");
-		String arriveAirport = in.readLine();
-		System.out.print("\tEnter Departure airport location: $");
-		String departAirport = in.readLine();
+                String userSold;
 
-                query += max + ", '" + cost + ", " + numSold + ", " + numStops + ", " + numseats + ")";
+                do{
+                    try{
+                        userSold = read.nextLine();
+			int numSold = Integer.parseInt(userSold);
+                        if(numSold < 0) {
+                            throw new RuntimeException();
+                        }
+                        break;
+                    }catch (Exception e) {
+                            System.out.println("Your input is invalid!");
+                            continue;
+                    }
+                }while (true);
+
+                System.out.print("\tEnter number of stops during the flight: $");
+                String userStops;
+
+                do{
+                    try{
+                        userStops = read.nextLine();
+			int numStops = Integer.parseInt(userStops);
+                        if(numStops < 0) {
+                        throw new RuntimeException();
+                        }
+                        break;
+                    }catch (Exception e) {
+                            System.out.println("Your input is invalid!");
+                            continue;
+                    }
+                }while (true);
+
+                System.out.print("\tEnter actual departure date in the following format yyyy-MM-dd HH:mm: $");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                String departDate;
+                String result;
+
+                do{
+                    try{
+                        departDate = read.nextLine();
+                        System.out.print(departDate);
+                        LocalDateTime dateTime = LocalDateTime.parse(departDate, formatter);
+                        result = dateTime.format(formatter);
+                        System.out.print("check the result");
+                        if(departDate != result) {
+                            throw new RuntimeException();
+                        }
+                        break;
+                    }catch (Exception e) {
+                            System.out.println("Your input is invalid!");
+                            continue;
+                    }
+                }while (true);
+
+
+                System.out.print("\tEnter actual arrival date in the following format yyyy-MM-dd HH:mm: $");
+                String arriveDate;
+
+                do{
+                    try{
+                        arriveDate = in.readLine();
+                        LocalDateTime formatDateTime = LocalDateTime.parse(arriveDate, formatter);
+                        System.out.print("after localdate: ");
+                        String arrivalResult = formatDateTime.format(formatter);
+                        if(arriveDate != arrivalResult) {
+                            throw new RuntimeException();
+                        }
+                        break;
+                    }catch (Exception e) {
+                            System.out.println("Your input is invalid!");
+                            continue;
+                    }
+                }while (true);
+
+                System.out.print("\tEnter arrival airport location that is exactly 5 letters: $");
+                String arriveAirport;
+
+                do{
+                    try{
+                        arriveAirport = read.nextLine();
+                        if(arriveAirport.length() != 5) {
+                            throw new RuntimeException();
+			}
+			break;
+                    }catch (Exception e) {
+                            System.out.println("Your input is invalid!");
+                            continue;
+                    }
+                }while (true);
+
+                System.out.print("\tEnter Departure airport location that is exactly 5 letters: $");
+                String departAirport;
+
+                do{
+                    try{
+                        departAirport = read.nextLine();
+                        if(departAirport.length() != 5) {
+                            throw new RuntimeException();
+                        }
+                        break;
+                    }catch (Exception e) {
+                            System.out.println("Your input is invalid!");
+                            continue;
+                    }
+                }while (true);
+
+                query += max + ", '" + userCost + ", " + userSold + ", " + userStops + ", " + departDate + ", " + arriveDate + ", " + arriveAirport + ", " + departAirport + ", " + ")";
                 System.out.print(query);
                 int num = esql.executeQuery(query);
             }catch(Exception e){
            System.err.println (e.getMessage());
-	   }*/
-	}
+           }
+        }
 
 	public static void AddTechnician(DBproject esql) {//4
 	    try{
