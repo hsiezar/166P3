@@ -9,8 +9,7 @@
  * Target DBMS: 'Postgres'
  *
  */
-
-
+import java.text.DateFormat;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -26,7 +25,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 /**
  * This class defines a simple embedded SQL utility class that is designed to
  * work with PostgreSQL JDBC drivers.
@@ -515,21 +515,17 @@ public class DBproject{
                     }
                 }while (true);
 
-                System.out.print("\tEnter actual departure date in the following format yyyy-MM-dd HH:mm: $");
+                System.out.print("\tEnter actual departure date in the following format yyyy-MM-dd HH:MM: $");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                String departDate;
+		String departDate;
                 String result;
-
+		
                 do{
                     try{
                         departDate = read.nextLine();
-                        System.out.print(departDate);
                         LocalDateTime dateTime = LocalDateTime.parse(departDate, formatter);
-                        result = dateTime.format(formatter);
-                        System.out.print("check the result");
-                        if(departDate != result) {
-                            throw new RuntimeException();
-                        }
+			result = dateTime.format(formatter);
+
                         break;
                     }catch (Exception e) {
                             System.out.println("Your input is invalid!");
@@ -538,18 +534,15 @@ public class DBproject{
                 }while (true);
 
 
-                System.out.print("\tEnter actual arrival date in the following format yyyy-MM-dd HH:mm: $");
+                System.out.print("\tEnter actual arrival date in the following format yyyy-MM-dd HH:MM: $");
                 String arriveDate;
-
+		String arrivalResult;
                 do{
                     try{
-                        arriveDate = in.readLine();
-                        LocalDateTime formatDateTime = LocalDateTime.parse(arriveDate, formatter);
-                        System.out.print("after localdate: ");
-                        String arrivalResult = formatDateTime.format(formatter);
-                        if(arriveDate != arrivalResult) {
-                            throw new RuntimeException();
-                        }
+                        arriveDate = read.nextLine();
+                        LocalDateTime dateTime = LocalDateTime.parse(arriveDate, formatter);
+			arrivalResult = dateTime.format(formatter);
+			
                         break;
                     }catch (Exception e) {
                             System.out.println("Your input is invalid!");
@@ -589,7 +582,7 @@ public class DBproject{
                     }
                 }while (true);
 
-                query += max + ", '" + userCost + ", " + userSold + ", " + userStops + ", " + departDate + ", " + arriveDate + ", " + arriveAirport + ", " + departAirport + ", " + ")";
+                query += max + ", " + userCost + ", " + userSold + ", " + userStops + ", \'" + result + "\', \'" + arrivalResult + "\', " + "\'" + arriveAirport + "\'" + ", " + "\'" + departAirport + "\')";
                 System.out.print(query);
                 int num = esql.executeQuery(query);
             }catch(Exception e){
